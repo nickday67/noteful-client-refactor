@@ -12,6 +12,17 @@ export default class AddNote extends Component {
       push: () => {}
     }
   };
+  state = {
+    isButtonDisabled: true
+  };
+
+  onInputChange = e => {
+    const hasText = e.target.value.trim().length > 0;
+    this.setState({
+      isButtonDisabled: !hasText
+    });
+  };
+
   static contextType = ApiContext;
 
   handleSubmit = e => {
@@ -51,7 +62,12 @@ export default class AddNote extends Component {
           <NotefulForm onSubmit={this.handleSubmit}>
             <div className="field">
               <label htmlFor="note-name-input">Name</label>
-              <input type="text" id="note-name-input" name="note-name" />
+              <input
+                type="text"
+                id="note-name-input"
+                name="note-name"
+                onChange={this.onInputChange}
+              />
             </div>
             <div className="field">
               <label htmlFor="note-content-input">Content</label>
@@ -69,7 +85,9 @@ export default class AddNote extends Component {
               </select>
             </div>
             <div className="buttons">
-              <button type="submit">Add note</button>
+              <button type="submit" disabled={this.state.isButtonDisabled}>
+                Add note
+              </button>
             </div>
           </NotefulForm>
         </section>
